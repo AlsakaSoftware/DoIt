@@ -78,6 +78,7 @@
 		997BB8CE2BCE9229008BAD90 /* SettingsFlowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997BB8CC2BCE9228008BAD90 /* SettingsFlowRouter.swift */; };
 		997BB8D02BD02494008BAD90 /* ManageAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997BB8CF2BD02493008BAD90 /* ManageAccountView.swift */; };
 		99A865E52C5CE85C0056DFA2 /* MyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A865E42C5CE85C0056DFA2 /* MyApp.swift */; };
+		99A865EB2C5CEACD0056DFA2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 99A865EA2C5CEACD0056DFA2 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -125,6 +126,7 @@
 		997BB8CF2BD02493008BAD90 /* ManageAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountView.swift; sourceTree = "<group>"; };
 		997BB8D12BD04943008BAD90 /* MyApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyApp.entitlements; sourceTree = "<group>"; };
 		99A865E42C5CE85C0056DFA2 /* MyApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyApp.swift; sourceTree = "<group>"; };
+		99A865EA2C5CEACD0056DFA2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,6 +241,7 @@
 		99388F7D2BC935BC008342BD /* MyApp */ = {
 			isa = PBXGroup;
 			children = (
+				99A865EA2C5CEACD0056DFA2 /* GoogleService-Info.plist */,
 				997BB8D12BD04943008BAD90 /* MyApp.entitlements */,
 				99A865E42C5CE85C0056DFA2 /* MyApp.swift */,
 				99388FC52BC93D3A008342BD /* AppDelegate.swift */,
@@ -499,7 +502,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 99388F762BC935BC008342BD /* Build configuration list for PBXProject "MyApp" */;
+			buildConfigurationList = 99388F762BC935BC008342BD /* Build configuration list for PBXProject "DoIt" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -528,6 +531,7 @@
 			files = (
 				99388F862BC935BD008342BD /* Preview Assets.xcassets in Resources */,
 				99388F832BC935BD008342BD /* Assets.xcassets in Resources */,
+				99A865EB2C5CEACD0056DFA2 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -717,7 +721,7 @@
 				DEVELOPMENT_TEAM = SJ33M62BDK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = MovieMate;
+				INFOPLIST_KEY_CFBundleDisplayName = DoIt;
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Would you like to get personalised ads?";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -753,7 +757,7 @@
 				DEVELOPMENT_TEAM = SJ33M62BDK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = MovieMate;
+				INFOPLIST_KEY_CFBundleDisplayName = DoIt;
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Would you like to get personalised ads?";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -778,7 +782,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		99388F762BC935BC008342BD /* Build configuration list for PBXProject "MyApp" */ = {
+		99388F762BC935BC008342BD /* Build configuration list for PBXProject "DoIt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				99388F872BC935BD008342BD /* Debug */,
