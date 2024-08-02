@@ -57,13 +57,16 @@ class TabBarCoordinator<Router: NavigationRouter>: Coordinator<TabBarRouter> {
         case .home:
             let coordinator = HomeFlowCoordinator<HomeFlowRouter>(
                 navigationController: navController,
-                startingRoute: .home,
-                tabbarCoordinator: self
+                startingRoute: .home(authManager: authManager, userManager: userManager),
+                tabbarCoordinator: self,
+                authManager: authManager,
+                userManager: userManager
             )
             coordinator.start()
         case .settings:
             let coordinator = SettingsFlowCoordinator<SettingsFlowRouter>(
                 navigationController: navController,
+                startingRoute: .settings(authManager: authManager, userManager: userManager),
                 tabbarCoordinator: self,
                 authManager: authManager,
                 userManager: userManager

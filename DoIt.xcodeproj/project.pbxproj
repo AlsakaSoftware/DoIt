@@ -79,6 +79,7 @@
 		997BB8D02BD02494008BAD90 /* ManageAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997BB8CF2BD02493008BAD90 /* ManageAccountView.swift */; };
 		99A865E52C5CE85C0056DFA2 /* MyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A865E42C5CE85C0056DFA2 /* MyApp.swift */; };
 		99A865EB2C5CEACD0056DFA2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 99A865EA2C5CEACD0056DFA2 /* GoogleService-Info.plist */; };
+		99A865EE2C5D16930056DFA2 /* ToDoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A865ED2C5D16930056DFA2 /* ToDoItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -127,6 +128,7 @@
 		997BB8D12BD04943008BAD90 /* MyApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyApp.entitlements; sourceTree = "<group>"; };
 		99A865E42C5CE85C0056DFA2 /* MyApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyApp.swift; sourceTree = "<group>"; };
 		99A865EA2C5CEACD0056DFA2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		99A865ED2C5D16930056DFA2 /* ToDoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,6 +247,7 @@
 				997BB8D12BD04943008BAD90 /* MyApp.entitlements */,
 				99A865E42C5CE85C0056DFA2 /* MyApp.swift */,
 				99388FC52BC93D3A008342BD /* AppDelegate.swift */,
+				99A865EC2C5D16850056DFA2 /* Models */,
 				995176382BEF414500EF9B8A /* DesignSystem */,
 				99388FD82BCA95B5008342BD /* Navigation */,
 				99388FC72BC93FCF008342BD /* Authentication */,
@@ -436,6 +439,14 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		99A865EC2C5D16850056DFA2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				99A865ED2C5D16930056DFA2 /* ToDoItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -562,6 +573,7 @@
 				99388FED2BCAA25C008342BD /* HomeFlowRouter.swift in Sources */,
 				995176452BF0D8DE00EF9B8A /* PrimaryButton.swift in Sources */,
 				995176372BEF347200EF9B8A /* PaywallView.swift in Sources */,
+				99A865EE2C5D16930056DFA2 /* ToDoItem.swift in Sources */,
 				995176422BEF4F0700EF9B8A /* Font+DesignSystem.swift in Sources */,
 				997BB8C92BCE91EC008BAD90 /* SettingsView.swift in Sources */,
 				99283C012BD2819E002959F0 /* UserManager.swift in Sources */,

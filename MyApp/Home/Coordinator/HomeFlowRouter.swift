@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum HomeFlowRouter: NavigationRouter, Equatable {
-    case home
+    case home(authManager: AuthManager, userManager: UserManager)
     case paywall
     
     var title: String {
@@ -26,8 +26,8 @@ enum HomeFlowRouter: NavigationRouter, Equatable {
     @MainActor @ViewBuilder
     func view() -> some View {
         switch self {
-        case .home:
-            let viewModel = HomeViewModel()
+        case .home(let authManager, let userManager):
+            let viewModel = HomeViewModel(authManager: authManager, userManager: userManager)
             HomeView(viewModel: viewModel)
         case .paywall:
             PaywallView()

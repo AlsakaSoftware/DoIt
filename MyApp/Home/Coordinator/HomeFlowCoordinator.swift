@@ -3,9 +3,19 @@ import SwiftUI
 
 class HomeFlowCoordinator<Router: NavigationRouter>: Coordinator<HomeFlowRouter> {
     private var tabbarCoordinator: TabBarCoordinator<TabBarRouter>?
-    
-    init(navigationController: UINavigationController = .init(), startingRoute: HomeFlowRouter? = nil, tabbarCoordinator: Coordinator<TabBarRouter>? = nil) {
+    private var authManager: AuthManager
+    private var userManager: UserManager
+
+    init(
+        navigationController: UINavigationController = .init(),
+        startingRoute: HomeFlowRouter? = nil,
+        tabbarCoordinator: Coordinator<TabBarRouter>? = nil,
+        authManager: AuthManager,
+        userManager: UserManager
+    ) {
         self.tabbarCoordinator = tabbarCoordinator as? TabBarCoordinator<TabBarRouter>
+        self.authManager = authManager
+        self.userManager = userManager
         super.init(navigationController: navigationController, startingRoute: startingRoute)
     }
 

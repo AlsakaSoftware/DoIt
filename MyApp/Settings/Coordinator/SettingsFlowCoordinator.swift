@@ -16,7 +16,7 @@ class SettingsFlowCoordinator<Router: NavigationRouter>: Coordinator<SettingsFlo
         self.authManager = authManager
         self.userManager = userManager
         self.tabbarCoordinator = tabbarCoordinator as? TabBarCoordinator<TabBarRouter>
-        super.init(navigationController: navigationController, startingRoute: .settings(authManager: authManager, userManager: userManager))
+        super.init(navigationController: navigationController, startingRoute: startingRoute)
     }
     
     // Override the base Coordinator's show() function because the environmentObject needs to be of type SettingsFlowCoordinator and not BaseCoordinator
