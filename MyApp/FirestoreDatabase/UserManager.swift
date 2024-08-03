@@ -55,7 +55,7 @@ extension UserManager: Equatable {
 extension UserManager {
     func addToDoItem(item: ToDoItem, userId: String, forDate: Date) throws {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY/MM/dd"
+        dateFormatter.dateFormat = "YYYY-MM-dd"
         let dateString = dateFormatter.string(from: forDate)
         
         guard dateString != "" else {
@@ -63,11 +63,52 @@ extension UserManager {
             throw AuthError.signInError
         }
         
+        let docRef = database.collection("users").document(userId).collection("lists").document(dateString).collection("items").document(item.id.uuidString)
+
         do {
-            try database.collection(userId).document(dateString).setData(from: item)
-        } catch {
-            throw AuthError.signInError // temporary error
+            try docRef.setData(from: item, merge: true)
+        } catch let error {
+            print("Error writing ToDoItem to Firestore: \(error)")
         }
     }
 
+    func updateToDoItem(item: ToDoItem, userId: String, forDate: Date) throws {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-dd"
+        let dateString = dateFormatter.string(from: forDate)
+        
+        guard dateString != "" else {
+            // temporary error
+            throw AuthError.signInError
+        }
+        
+        let docRef = database.collection("users").document(userId).collection("lists").document(dateString).collection("items").document(item.id.uuidString)
+
+        do {
+            try docRef.setData(from: item, merge: true)
+        } catch let error {
+            print("Error writing ToDoItem to Firestore: \(error)")
+        }
+
+    }
+
+    func fetchList(userId: String, date: Date) async throws -> [ToDoItem] {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-dd"
+        let dateString = dateFormatter.string(from: date)
+        
+        let db = Firestore.firestore()
+        let collectionRef = db.collection("users").document(userId).collection("lists").document(dateString).collection("items")
+        
+        let querySnapshot = try await collectionRef.getDocuments()
+
+        var toDoItems = [ToDoItem]()
+        for document in querySnapshot.documents {
+            if let toDoItem = try? document.data(as: ToDoItem.self) {
+                toDoItems.append(toDoItem)
+            }
+        }
+        
+        return toDoItems
+    }
 }

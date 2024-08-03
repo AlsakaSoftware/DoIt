@@ -82,14 +82,12 @@ struct HomeView: View {
     }
     
     @ViewBuilder
-    func toDoItemRow(item: ToDoItem) -> some View {
-        var isCompleted = item.isCompleted
-    
+    func toDoItemRow(item: ToDoItem) -> some View {    
         HStack {
             Button {
-                viewModel.updateCompletionStatus(for: item.id, to: isCompleted)
+                viewModel.updateCompletionStatus(item: item)
             } label: {
-                Image(item.isCompleted ? "checkbox-unchecked" : "checkbox-checked-filled")
+                Image(item.isCompleted ? "checkbox-checked-filled" : "checkbox-unchecked")
                     .resizable()
                     .frame(width: 35, height: 35)
 
