@@ -111,4 +111,22 @@ extension UserManager {
         
         return toDoItems
     }
+    
+    func deleteToDoItem(userId: String, listDate: Date, itemId: UUID) async throws{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-dd"
+        let dateString = dateFormatter.string(from: listDate)
+
+        let docRef = database.collection("users").document(userId).collection("lists").document(dateString).collection("items").document(itemId.uuidString)
+        
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            docRef.delete { error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: ())
+                }
+            }
+        }
+    }
 }

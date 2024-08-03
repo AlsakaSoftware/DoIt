@@ -54,4 +54,14 @@ final class HomeViewModel: ObservableObject {
             print("failed to add todo item to list with error \(error)")
         }
     }
+    
+    func deleteItem(itemId: UUID) async {
+        guard let userId = authManager.signedInUserId() else { return }
+        do {
+            try await userManager.deleteToDoItem(userId: userId, listDate: listDate, itemId: itemId)
+            loadToDoItems()
+        } catch let error {
+            print("couldn't delete due to error \(error)")
+        }
+    }
 }

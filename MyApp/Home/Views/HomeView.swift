@@ -15,7 +15,7 @@ struct HomeView: View {
     var body: some View {
         VStack {
             headerView
-            
+
             VStack(alignment: .leading) {
                 ForEach(viewModel.toDoItems) { item in
                     toDoItemRow(item: item)
