@@ -13,36 +13,44 @@ struct HomeView: View {
     @State var text: String = "asdasd"
     
     var body: some View {
-        VStack {
-            headerView
+        ScrollView {
+            VStack {
+                headerView
 
-            VStack(alignment: .leading) {
-                ForEach(viewModel.toDoItems) { item in
-                    toDoItemRow(item: item)
+                VStack(alignment: .leading) {
+                    ForEach(viewModel.toDoItems) { item in
+                        toDoItemRow(item: item)
+                    }
+                }
+                .padding(.horizontal, 5)
+                .padding(.vertical, 40)
+                
+                Spacer()
+
+                PrimaryButton {
+
+                } label: {
+                    Text("Add Item")
+                }
+                .padding(.horizontal, 20)
+            }
+            .padding()
+            .navigationTitle("Home")
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .onAppear {
+                coordinator.showATTPermissionsAlert()
+                if showPaywallOnLaunch {
+                    showPaywallOnLaunch = false
+                    Task {
+                        if await !PurchasesManager.shared.getSubscriptionStatus() {
+                            coordinator.show(.paywall)
+                        }
+                    }
                 }
             }
-            .padding(.horizontal, 5)
-            .padding(.vertical, 40)
-            
-            Spacer()
         }
-        .padding()
-        .navigationTitle("Home")
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.designSystem(.primaryBackground).ignoresSafeArea())
-        .onAppear {
-                 coordinator.showATTPermissionsAlert()
-                 if showPaywallOnLaunch {
-                     showPaywallOnLaunch = false
-                     Task {
-                         if await !PurchasesManager.shared.getSubscriptionStatus() {
-                             coordinator.show(.paywall)
-                         }
-                     }
-                     
-                 }
-             }
-         .background(Color.designSystem(.primaryBackground))
+
         
     }
     
@@ -98,6 +106,17 @@ struct HomeView: View {
                 .padding()
             
             Spacer()
+            
+            Button {
+                Task {
+                    await viewModel.deleteItem(itemId: item.id)
+                }
+            } label: {
+                Image("trash-icon")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .foregroundStyle(Color.designSystem(.primaryControlBackground))
+            }
         }
         .padding(.horizontal)
         .background(Color.designSystem(.secondaryBackground).opacity(0.5))
