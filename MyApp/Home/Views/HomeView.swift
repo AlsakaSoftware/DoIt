@@ -5,7 +5,8 @@ struct HomeView: View {
     @EnvironmentObject var coordinator: HomeFlowCoordinator<HomeFlowRouter>
     @StateObject private var viewModel: HomeViewModel
     @State var showPaywallOnLaunch: Bool = true
-    
+    @State private var isShowingAddItemSheet = false
+
     init(viewModel: HomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -28,7 +29,9 @@ struct HomeView: View {
                 Spacer()
 
                 PrimaryButton {
-
+                    coordinator.show(.addItem(itemIndex: viewModel.toDoItems.count, onAddItem: { item in
+                        viewModel.addToDoItem(item: item)
+                    }))
                 } label: {
                     Text("Add Item")
                 }
@@ -37,21 +40,19 @@ struct HomeView: View {
             .padding()
             .navigationTitle("Home")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onAppear {
-                coordinator.showATTPermissionsAlert()
-                if showPaywallOnLaunch {
-                    showPaywallOnLaunch = false
-                    Task {
-                        if await !PurchasesManager.shared.getSubscriptionStatus() {
-                            coordinator.show(.paywall)
-                        }
+        }
+        .background(Color.designSystem(.primaryBackground).ignoresSafeArea())
+        .onAppear {
+            coordinator.showATTPermissionsAlert()
+            if showPaywallOnLaunch {
+                showPaywallOnLaunch = false
+                Task {
+                    if await !PurchasesManager.shared.getSubscriptionStatus() {
+                        coordinator.show(.paywall)
                     }
                 }
             }
         }
-        .background(Color.designSystem(.primaryBackground).ignoresSafeArea())
-
-        
     }
     
     private var headerView: some View {
@@ -123,6 +124,7 @@ struct HomeView: View {
         .cornerRadius(10)
     }
 }
+
 
 #Preview {
     let viewModel = HomeViewModel(authManager: AuthManager(), userManager: UserManager())

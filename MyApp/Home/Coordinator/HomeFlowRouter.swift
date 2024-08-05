@@ -1,13 +1,25 @@
 import SwiftUI
 
 enum HomeFlowRouter: NavigationRouter, Equatable {
+    static func == (lhs: HomeFlowRouter, rhs: HomeFlowRouter) -> Bool {
+        switch (lhs, rhs) {
+        case (.addItem(let itemIndex1, let onAddItem1), .addItem(let itemIndex2, let onAddItem2)):
+            return itemIndex1 == itemIndex2 && onAddItem1 == nil && onAddItem2 == nil
+        default:
+            return true
+        }
+    }
+
     case home(authManager: AuthManager, userManager: UserManager)
+    case addItem(itemIndex: Int, onAddItem: ((ToDoItem) -> Void)? = nil)
     case paywall
     
     var title: String {
         switch self {
         case .home:
             return "Home"
+        case .addItem:
+            return "Add item"
         case .paywall:
             return "Paywall"
 
@@ -18,6 +30,8 @@ enum HomeFlowRouter: NavigationRouter, Equatable {
         switch self {
         case .home:
             return .push
+        case .addItem:
+            return .presentModally
         case .paywall:
             return .presentModally
         }
@@ -29,6 +43,8 @@ enum HomeFlowRouter: NavigationRouter, Equatable {
         case .home(let authManager, let userManager):
             let viewModel = HomeViewModel(authManager: authManager, userManager: userManager)
             HomeView(viewModel: viewModel)
+        case .addItem(let itemIndex, let onAddItem):
+            AddItemView(itemIndex: itemIndex, onAddItem: onAddItem)
         case .paywall:
             PaywallView()
         }

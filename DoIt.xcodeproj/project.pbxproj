@@ -71,6 +71,7 @@
 		995176422BEF4F0700EF9B8A /* Font+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995176412BEF4F0700EF9B8A /* Font+DesignSystem.swift */; };
 		995176452BF0D8DE00EF9B8A /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995176442BF0D8DE00EF9B8A /* PrimaryButton.swift */; };
 		995176472BF0D8F600EF9B8A /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995176462BF0D8F600EF9B8A /* SecondaryButton.swift */; };
+		995431292C5E48CF002765DA /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995431282C5E48CF002765DA /* AddItemView.swift */; };
 		997BB8C42BCE8B1F008BAD90 /* AuthenticationFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997BB8C32BCE8B1F008BAD90 /* AuthenticationFlowCoordinator.swift */; };
 		997BB8C72BCE8B2B008BAD90 /* AuthenticationFlowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997BB8C62BCE8B2B008BAD90 /* AuthenticationFlowRouter.swift */; };
 		997BB8C92BCE91EC008BAD90 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997BB8C82BCE91DE008BAD90 /* SettingsView.swift */; };
@@ -119,6 +120,7 @@
 		995176412BEF4F0700EF9B8A /* Font+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+DesignSystem.swift"; sourceTree = "<group>"; };
 		995176442BF0D8DE00EF9B8A /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
 		995176462BF0D8F600EF9B8A /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
+		995431282C5E48CF002765DA /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
 		997BB8C32BCE8B1F008BAD90 /* AuthenticationFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationFlowCoordinator.swift; sourceTree = "<group>"; };
 		997BB8C62BCE8B2B008BAD90 /* AuthenticationFlowRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationFlowRouter.swift; sourceTree = "<group>"; };
 		997BB8C82BCE91DE008BAD90 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				99388FD22BC94C10008342BD /* HomeView.swift */,
+				995431282C5E48CF002765DA /* AddItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -590,6 +593,7 @@
 				9938B0A52BD3F71000D448B0 /* Coordinator+UIAlert.swift in Sources */,
 				9951763C2BEF41F000EF9B8A /* ColorName.swift in Sources */,
 				99297BC72BD11A980027169D /* SignUpWithEmailViewModel.swift in Sources */,
+				995431292C5E48CF002765DA /* AddItemView.swift in Sources */,
 				99388FCB2BC94143008342BD /* AuthenticationOptionsView.swift in Sources */,
 				997BB8CE2BCE9229008BAD90 /* SettingsFlowRouter.swift in Sources */,
 				99297BD12BD11B360027169D /* SettingsViewModel.swift in Sources */,
