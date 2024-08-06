@@ -53,7 +53,7 @@ extension UserManager: Equatable {
 
 // MARK: UserManager + ToDoItem
 extension UserManager {
-    func addToDoItem(item: ToDoItem, userId: String, forDate: Date) throws {
+    func updateList(list: ToDoList, userId: String, forDate: Date) throws {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-dd"
         let dateString = dateFormatter.string(from: forDate)
@@ -63,70 +63,32 @@ extension UserManager {
             throw AuthError.signInError
         }
         
-        let docRef = database.collection("users").document(userId).collection("lists").document(dateString).collection("items").document(item.id.uuidString)
+        let docRef = database.collection("users").document(userId).collection("lists").document(dateString)
 
         do {
-            try docRef.setData(from: item, merge: true)
-        } catch let error {
-            print("Error writing ToDoItem to Firestore: \(error)")
-        }
-    }
-
-    func updateToDoItem(item: ToDoItem, userId: String, forDate: Date) throws {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY-MM-dd"
-        let dateString = dateFormatter.string(from: forDate)
-        
-        guard dateString != "" else {
-            // temporary error
-            throw AuthError.signInError
-        }
-        
-        let docRef = database.collection("users").document(userId).collection("lists").document(dateString).collection("items").document(item.id.uuidString)
-
-        do {
-            try docRef.setData(from: item, merge: true)
+            try docRef.setData(from: list, merge: true)
         } catch let error {
             print("Error writing ToDoItem to Firestore: \(error)")
         }
 
     }
 
-    func fetchList(userId: String, date: Date) async throws -> [ToDoItem] {
+    func fetchList(userId: String, date: Date) async throws -> ToDoList {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-dd"
         let dateString = dateFormatter.string(from: date)
         
         let db = Firestore.firestore()
-        let collectionRef = db.collection("users").document(userId).collection("lists").document(dateString).collection("items")
+        let listDocRef = db.collection("users").document(userId).collection("lists").document(dateString)
         
-        let querySnapshot = try await collectionRef.getDocuments()
+        let documentSnapshot = try await listDocRef.getDocument()
 
-        var toDoItems = [ToDoItem]()
-        for document in querySnapshot.documents {
-            if let toDoItem = try? document.data(as: ToDoItem.self) {
-                toDoItems.append(toDoItem)
-            }
+        guard documentSnapshot.exists else {
+            print("Document does not exist at path: \(listDocRef.path)")
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document does not exist"])
         }
         
-        return toDoItems
-    }
-    
-    func deleteToDoItem(userId: String, listDate: Date, itemId: UUID) async throws{
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY-MM-dd"
-        let dateString = dateFormatter.string(from: listDate)
-
-        let docRef = database.collection("users").document(userId).collection("lists").document(dateString).collection("items").document(itemId.uuidString)
-        
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            docRef.delete { error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(returning: ())
-                }
-            }
-        }
+        let list = try documentSnapshot.data(as: ToDoList.self)
+        return list
     }
 }

@@ -8,3 +8,7 @@ struct ToDoItem: Codable, Identifiable {
     var isMainTask: Bool
     var isCompleted: Bool
 }
+
+struct ToDoList: Codable {
+    var items: [ToDoItem]
+}

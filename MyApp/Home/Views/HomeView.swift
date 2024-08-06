@@ -19,7 +19,7 @@ struct HomeView: View {
                 headerView
 
                 VStack(alignment: .leading) {
-                    ForEach(viewModel.toDoItems) { item in
+                    ForEach(viewModel.list.items) { item in
                         toDoItemRow(item: item)
                     }
                 }
@@ -29,7 +29,7 @@ struct HomeView: View {
                 Spacer()
 
                 PrimaryButton {
-                    coordinator.show(.addItem(itemIndex: viewModel.toDoItems.count, onAddItem: { item in
+                    coordinator.show(.addItem(itemIndex: viewModel.list.items.count, onAddItem: { item in
                         viewModel.addToDoItem(item: item)
                     }))
                 } label: {

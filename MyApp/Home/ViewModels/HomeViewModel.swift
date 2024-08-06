@@ -6,13 +6,7 @@ final class HomeViewModel: ObservableObject {
     var listDate: Date = Date()
     
     
-    @Published var toDoItems: [ToDoItem] = [
-        ToDoItem(id: UUID(), dayIndex: 1, title: "Task 1", description: "Task 1 description", isMainTask: true, isCompleted: true),
-        ToDoItem(id: UUID(), dayIndex: 1, title: "Task 1", description: "Task 1 description", isMainTask: true, isCompleted: false),
-        ToDoItem(id: UUID(), dayIndex: 1, title: "Task 1", description: "Task 1 description", isMainTask: false, isCompleted: true),
-        ToDoItem(id: UUID(), dayIndex: 1, title: "Task 1", description: "Task 1 description", isMainTask: false, isCompleted: false)
-    ]
-    
+    @Published var list = ToDoList(items: [])
 
     init(authManager: AuthManager, userManager: UserManager) {
         self.authManager = authManager
@@ -22,44 +16,46 @@ final class HomeViewModel: ObservableObject {
     }
 
     func updateCompletionStatus(item: ToDoItem) {
-        guard let userId = authManager.signedInUserId(), let index = toDoItems.firstIndex(where: { $0.id == item.id }) else { return }
+        guard let userId = authManager.signedInUserId(), let index = list.items.firstIndex(where: { $0.id == item.id }) else { return }
             
-        toDoItems[index].isCompleted.toggle()
+        list.items[index].isCompleted.toggle()
         
         do {
-            try userManager.updateToDoItem(item: toDoItems[index], userId: userId, forDate: listDate)
-            loadToDoItems()
+            try userManager.updateList(list: list, userId: userId, forDate: listDate)
         } catch let error {
             print("failed to update item with \(error)")
         }
+        loadToDoItems()
     }
 
     private func loadToDoItems() {
         Task {
             guard let userId = authManager.signedInUserId() else { return }
-            let toDoItems = try await userManager.fetchList(userId: userId, date: listDate)
+            let list = try await userManager.fetchList(userId: userId, date: listDate)
             DispatchQueue.main.async {
-                self.toDoItems = toDoItems
+                self.list = list
             }
         }
     }
     
     func addToDoItem(item: ToDoItem) {
         guard let userId = authManager.signedInUserId() else { return }
-        
+        list.items.append(item)
         do {
-            try userManager.addToDoItem(item: item, userId: userId, forDate: listDate)
-            loadToDoItems()
+            try userManager.updateList(list: list, userId: userId, forDate: listDate)
         } catch let error {
             print("failed to add todo item to list with error \(error)")
         }
+        loadToDoItems()
     }
     
+    @MainActor
     func deleteItem(itemId: UUID) async {
-        guard let userId = authManager.signedInUserId() else { return }
+        guard let userId = authManager.signedInUserId(), let index = list.items.firstIndex(where: { $0.id == itemId }) else { return }
+        list.items.remove(at: index)
+
         do {
-            try await userManager.deleteToDoItem(userId: userId, listDate: listDate, itemId: itemId)
-            loadToDoItems()
+            try userManager.updateList(list: list, userId: userId, forDate: listDate)
         } catch let error {
             print("couldn't delete due to error \(error)")
         }
