@@ -1,9 +1,9 @@
 import SwiftUI
 
 enum AuthenticationFlowRouter: NavigationRouter {
-    case authenticationOptionsView(authManager: AuthManager, userManager: UserManager)
-    case signInWithEmail(authManager: AuthManager, userManager: UserManager)
-    case signUpWithEmail(authManager: AuthManager, userManager: UserManager)
+    case authenticationOptionsView(authManager: AuthManager, databaseManager: DatabaseManager)
+    case signInWithEmail(authManager: AuthManager, databaseManager: DatabaseManager)
+    case signUpWithEmail(authManager: AuthManager, databaseManager: DatabaseManager)
     case resetPassword(authManager: AuthManager)
     
     var transition: NavigationTranisitionStyle {
@@ -13,21 +13,21 @@ enum AuthenticationFlowRouter: NavigationRouter {
     @MainActor @ViewBuilder
     func view() -> some View {
         switch self {
-        case .authenticationOptionsView(let authManager, let userManager):
-            let viewModel = AuthenticationOptionsViewModel(authManager: authManager, userManager: userManager)
+        case .authenticationOptionsView(let authManager, let databaseManager):
+            let viewModel = AuthenticationOptionsViewModel(authManager: authManager, databaseManager: databaseManager)
             AuthenticationOptionsView(viewModel: viewModel)
 
-        case .signInWithEmail(let authManager, let userManager):
+        case .signInWithEmail(let authManager, let databaseManager):
             let viewModel = SignInWithEmailViewModel(
                 authManager: authManager,
-                userManager: userManager
+                databaseManager: databaseManager
             )
             SignInWithEmailView(viewModel: viewModel)
 
-        case .signUpWithEmail(let authManager, let userManager):
+        case .signUpWithEmail(let authManager, let databaseManager):
             let viewModel = SignUpWithEmailViewModel(
                 authManager: authManager,
-                userManager: userManager
+                databaseManager: databaseManager
             )
             SignUpWithEmailView(viewModel: viewModel)
 

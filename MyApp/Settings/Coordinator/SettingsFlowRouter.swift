@@ -10,7 +10,7 @@ enum SettingsFlowRouter: NavigationRouter, Equatable {
         }
     }
     
-    case settings(authManager: AuthManager, userManager: UserManager)
+    case settings(authManager: AuthManager, databaseManager: DatabaseManager)
     case accountSettings
     case paywall(onPurchaseComplete: (() -> Void)? = nil)
         
@@ -26,8 +26,8 @@ enum SettingsFlowRouter: NavigationRouter, Equatable {
     @MainActor @ViewBuilder
     func view() -> some View {
         switch self {
-        case .settings(let authManager, let userManager):
-            let viewModel = SettingsViewModel(authManager: authManager, userManager: userManager)
+        case .settings(let authManager, let databaseManager):
+            let viewModel = SettingsViewModel(authManager: authManager, databaseManager: databaseManager)
             SettingsView(viewModel: viewModel)
         case .accountSettings:
             let viewModel = ManageAccountViewModel()

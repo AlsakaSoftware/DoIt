@@ -127,6 +127,6 @@ struct SettingsView: View {
 }
 
 #Preview {
-    let viewModel = SettingsViewModel(authManager: AuthManager(), userManager: UserManager())
+    let viewModel = SettingsViewModel(authManager: AuthManager(), databaseManager: DatabaseManager())
     return SettingsView(viewModel: viewModel)
 }

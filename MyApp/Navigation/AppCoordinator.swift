@@ -4,11 +4,11 @@ import FirebaseAuth
 
 class AppCoordinator<Router: NavigationRouter>: Coordinator<AppRouter> {
     private let authManager: AuthManager
-    let userManager: UserManager
+    private let databaseManager: DatabaseManager
     
     override init(navigationController: UINavigationController = .init(), startingRoute: AppRouter? = nil) {
         self.authManager = AuthManager()
-        self.userManager = UserManager()
+        self.databaseManager = DatabaseManager()
         super.init(navigationController: navigationController, startingRoute: startingRoute)
     }
     
@@ -29,7 +29,7 @@ class AppCoordinator<Router: NavigationRouter>: Coordinator<AppRouter> {
             navigationController: navigationController,
             appCoordinator: self,
             authManager: authManager,
-            userManager: userManager
+            databaseManager: databaseManager
         )
         coordinator.start()
     }
@@ -40,7 +40,7 @@ class AppCoordinator<Router: NavigationRouter>: Coordinator<AppRouter> {
             navigationController: navigationController,
             appCoordinator: self,
             authManager: authManager,
-            userManager: userManager
+            databaseManager: databaseManager
         )
         coordinator.start()
     }

@@ -7,10 +7,10 @@ class AuthenticationFlowCoordinator<Router: NavigationRouter>: Coordinator<Authe
         navigationController: UINavigationController = .init(),
         appCoordinator: Coordinator<AppRouter>,
         authManager: AuthManager,
-        userManager: UserManager,
+        databaseManager: DatabaseManager,
         startingRoute: AuthenticationFlowRouter? = nil) {
         self.appCoordinator = appCoordinator as? AppCoordinator<AppRouter>
-        super.init(navigationController: navigationController, startingRoute: .authenticationOptionsView(authManager: authManager, userManager: userManager))
+        super.init(navigationController: navigationController, startingRoute: .authenticationOptionsView(authManager: authManager, databaseManager: databaseManager))
     }
     
     // Override the base Coordinator's show() function because the environmentObject needs to be of type AuthenticationFlowCoordinator and not BaseCoordinator

@@ -2,15 +2,15 @@ import Foundation
 
 final class HomeViewModel: ObservableObject {
     private let authManager: AuthManager
-    private let userManager: UserManager
+    private let databaseManager: DatabaseManager
     var listDate: Date = Date()
     
     
     @Published var list = ToDoList(items: [])
 
-    init(authManager: AuthManager, userManager: UserManager) {
+    init(authManager: AuthManager, databaseManager: DatabaseManager) {
         self.authManager = authManager
-        self.userManager = userManager
+        self.databaseManager = databaseManager
      
         loadToDoItems()
     }
@@ -21,7 +21,7 @@ final class HomeViewModel: ObservableObject {
         list.items[index].isCompleted.toggle()
         
         do {
-            try userManager.updateList(list: list, userId: userId, forDate: listDate)
+            try databaseManager.updateList(list: list, userId: userId, forDate: listDate)
         } catch let error {
             print("failed to update item with \(error)")
         }
@@ -31,7 +31,7 @@ final class HomeViewModel: ObservableObject {
     private func loadToDoItems() {
         Task {
             guard let userId = authManager.signedInUserId() else { return }
-            let list = try await userManager.fetchList(userId: userId, date: listDate)
+            let list = try await databaseManager.fetchList(userId: userId, date: listDate)
             DispatchQueue.main.async {
                 self.list = list
             }
@@ -42,7 +42,7 @@ final class HomeViewModel: ObservableObject {
         guard let userId = authManager.signedInUserId() else { return }
         list.items.append(item)
         do {
-            try userManager.updateList(list: list, userId: userId, forDate: listDate)
+            try databaseManager.updateList(list: list, userId: userId, forDate: listDate)
         } catch let error {
             print("failed to add todo item to list with error \(error)")
         }
@@ -55,7 +55,7 @@ final class HomeViewModel: ObservableObject {
         list.items.remove(at: index)
 
         do {
-            try userManager.updateList(list: list, userId: userId, forDate: listDate)
+            try databaseManager.updateList(list: list, userId: userId, forDate: listDate)
         } catch let error {
             print("couldn't delete due to error \(error)")
         }

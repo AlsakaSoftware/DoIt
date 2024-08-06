@@ -65,7 +65,7 @@ struct AuthenticationOptionsView: View {
     
     var signInButton: some View {
         PrimaryButton {
-            coordinator.show(.signInWithEmail(authManager: viewModel.authManager, userManager: viewModel.userManager))
+            coordinator.show(.signInWithEmail(authManager: viewModel.authManager, databaseManager: viewModel.databaseManager))
 
         } label: {
             Text("Sign In with Email")
@@ -74,7 +74,7 @@ struct AuthenticationOptionsView: View {
     
     var signUpButton: some View {
         PrimaryButton {
-            coordinator.show(.signUpWithEmail(authManager: viewModel.authManager, userManager: viewModel.userManager))
+            coordinator.show(.signUpWithEmail(authManager: viewModel.authManager, databaseManager: viewModel.databaseManager))
 
         } label: {
             Text("Sign Up with Email")
@@ -84,11 +84,11 @@ struct AuthenticationOptionsView: View {
 
 #Preview {
     let authManager = AuthManager()
-    let userManager = UserManager()
+    let databaseManager = DatabaseManager()
     
     let viewModel = AuthenticationOptionsViewModel(
         authManager: authManager,
-        userManager: userManager
+        databaseManager: databaseManager
     )
 
     return AuthenticationOptionsView(viewModel: viewModel)

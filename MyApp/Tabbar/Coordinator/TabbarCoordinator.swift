@@ -5,18 +5,18 @@ class TabBarCoordinator<Router: NavigationRouter>: Coordinator<TabBarRouter> {
     var appCoordinator: AppCoordinator<AppRouter>?
     var tabBarController: UITabBarController
     var authManager: AuthManager
-    var userManager: UserManager
+    var databaseManager: DatabaseManager
     
     init(
         navigationController: UINavigationController = .init(),
         appCoordinator: Coordinator<AppRouter>,
         authManager: AuthManager,
-        userManager: UserManager,
+        databaseManager: DatabaseManager,
         startingRoute: TabBarRouter? = nil
     ) {
         self.appCoordinator = appCoordinator as? AppCoordinator<AppRouter>
         self.authManager = authManager
-        self.userManager = userManager
+        self.databaseManager = databaseManager
         self.tabBarController = .init()
         super.init(navigationController: navigationController, startingRoute: .home)
     }
@@ -57,19 +57,19 @@ class TabBarCoordinator<Router: NavigationRouter>: Coordinator<TabBarRouter> {
         case .home:
             let coordinator = HomeFlowCoordinator<HomeFlowRouter>(
                 navigationController: navController,
-                startingRoute: .home(authManager: authManager, userManager: userManager),
+                startingRoute: .home(authManager: authManager, databaseManager: databaseManager),
                 tabbarCoordinator: self,
                 authManager: authManager,
-                userManager: userManager
+                databaseManager: databaseManager
             )
             coordinator.start()
         case .settings:
             let coordinator = SettingsFlowCoordinator<SettingsFlowRouter>(
                 navigationController: navController,
-                startingRoute: .settings(authManager: authManager, userManager: userManager),
+                startingRoute: .settings(authManager: authManager, databaseManager: databaseManager),
                 tabbarCoordinator: self,
                 authManager: authManager,
-                userManager: userManager
+                databaseManager: databaseManager
             )
             coordinator.start()
         }

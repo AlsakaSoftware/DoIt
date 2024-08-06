@@ -127,7 +127,7 @@ struct HomeView: View {
 
 
 #Preview {
-    let viewModel = HomeViewModel(authManager: AuthManager(), userManager: UserManager())
+    let viewModel = HomeViewModel(authManager: AuthManager(), databaseManager: DatabaseManager())
     return HomeView(viewModel: viewModel)
-        .environmentObject(HomeFlowCoordinator<HomeFlowRouter>(authManager: AuthManager(), userManager: UserManager()))
+        .environmentObject(HomeFlowCoordinator<HomeFlowRouter>(authManager: AuthManager(), databaseManager: DatabaseManager()))
 }

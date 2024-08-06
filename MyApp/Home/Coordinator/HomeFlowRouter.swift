@@ -10,7 +10,7 @@ enum HomeFlowRouter: NavigationRouter, Equatable {
         }
     }
 
-    case home(authManager: AuthManager, userManager: UserManager)
+    case home(authManager: AuthManager, databaseManager: DatabaseManager)
     case addItem(itemIndex: Int, onAddItem: ((ToDoItem) -> Void)? = nil)
     case paywall
     
@@ -40,8 +40,8 @@ enum HomeFlowRouter: NavigationRouter, Equatable {
     @MainActor @ViewBuilder
     func view() -> some View {
         switch self {
-        case .home(let authManager, let userManager):
-            let viewModel = HomeViewModel(authManager: authManager, userManager: userManager)
+        case .home(let authManager, let databaseManager):
+            let viewModel = HomeViewModel(authManager: authManager, databaseManager: databaseManager)
             HomeView(viewModel: viewModel)
         case .addItem(let itemIndex, let onAddItem):
             AddItemView(itemIndex: itemIndex, onAddItem: onAddItem)

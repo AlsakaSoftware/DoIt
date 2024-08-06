@@ -6,11 +6,11 @@ final class SignUpWithEmailViewModel: ObservableObject {
     @Published var password = ""
 
     private var authManager: AuthManager
-    private var userManager: UserManager
+    private var databaseManager: DatabaseManager
 
-    init(authManager: AuthManager, userManager: UserManager) {
+    init(authManager: AuthManager, databaseManager: DatabaseManager) {
         self.authManager = authManager
-        self.userManager = userManager
+        self.databaseManager = databaseManager
     }
 
     func signUp() async throws {
@@ -18,6 +18,6 @@ final class SignUpWithEmailViewModel: ObservableObject {
             throw AuthError.signUpError
         }
         let authDataResult = try await authManager.createUser(email: email, password: password)
-        try await userManager.createNewUser(auth: authDataResult)
+        try await databaseManager.createNewUser(auth: authDataResult)
     }
 }

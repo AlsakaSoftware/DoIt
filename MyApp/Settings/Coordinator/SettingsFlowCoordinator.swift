@@ -4,17 +4,17 @@ import SwiftUI
 class SettingsFlowCoordinator<Router: NavigationRouter>: Coordinator<SettingsFlowRouter> {
     private var tabbarCoordinator: TabBarCoordinator<TabBarRouter>?
     private var authManager: AuthManager
-    private var userManager: UserManager
+    private var databaseManager: DatabaseManager
 
     init(
         navigationController: UINavigationController = .init(),
         startingRoute: SettingsFlowRouter? = nil,
         tabbarCoordinator: Coordinator<TabBarRouter>? = nil,
         authManager: AuthManager,
-        userManager: UserManager
+        databaseManager: DatabaseManager
     ) {
         self.authManager = authManager
-        self.userManager = userManager
+        self.databaseManager = databaseManager
         self.tabbarCoordinator = tabbarCoordinator as? TabBarCoordinator<TabBarRouter>
         super.init(navigationController: navigationController, startingRoute: startingRoute)
     }

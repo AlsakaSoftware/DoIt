@@ -5,16 +5,16 @@ import CryptoKit
 @MainActor
 final class AuthenticationOptionsViewModel:NSObject, ObservableObject {
     var authManager: AuthManager
-    var userManager: UserManager
+    var databaseManager: DatabaseManager
 
     @Published var didSignInWithAppleSuccessfully = false
     @Published var appleSignInError: AuthError? = nil
     private var currentNonce: String?
     private var presentationAnchor: ASPresentationAnchor?
 
-    init(authManager: AuthManager, userManager: UserManager) {
+    init(authManager: AuthManager, databaseManager: DatabaseManager) {
         self.authManager = authManager
-        self.userManager = userManager
+        self.databaseManager = databaseManager
     }
     
     func startSignInWithAppleFlow(presentationAnchor: ASPresentationAnchor?) {
@@ -59,7 +59,7 @@ extension AuthenticationOptionsViewModel: ASAuthorizationControllerDelegate {
         Task {
             do {
                 let authDataResult = try await authManager.signInWithApple(tokens: tokens)
-                try await userManager.createNewUser(auth: authDataResult) 
+                try await databaseManager.createNewUser(auth: authDataResult) 
                 didSignInWithAppleSuccessfully = true
                 appleSignInError = nil
             } catch {

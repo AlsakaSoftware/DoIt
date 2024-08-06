@@ -11,7 +11,7 @@ enum DBError: Error {
     case connectionError
 }
 
-final class UserManager {
+final class DatabaseManager {
     let database = Firestore.firestore()
     
     func createNewUser(auth: AuthUserModel) async throws {
@@ -42,17 +42,17 @@ final class UserManager {
     }
 }
 
-extension UserManager: Equatable {
-    static func == (lhs: UserManager, rhs: UserManager) -> Bool {
+extension DatabaseManager: Equatable {
+    static func == (lhs: DatabaseManager, rhs: DatabaseManager) -> Bool {
         
-        // UserManager doesn't have any meaningful properties
+        // databaseManager doesn't have any meaningful properties
         // to compare, you we can just return true
         return true
     }
 }
 
-// MARK: UserManager + ToDoItem
-extension UserManager {
+// MARK: databaseManager + ToDoItem
+extension DatabaseManager {
     func updateList(list: ToDoList, userId: String, forDate: Date) throws {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-dd"

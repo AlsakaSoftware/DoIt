@@ -3,13 +3,13 @@ import RevenueCat
 
 final class SettingsViewModel: ObservableObject {
     private let authManager: AuthManager
-    private let userManager: UserManager
+    private let databaseManager: DatabaseManager
     @Published var user: DBUser? = nil
     @Published var isUserSubscribed: Bool = false
 
-    init(authManager: AuthManager, userManager: UserManager) {
+    init(authManager: AuthManager, databaseManager: DatabaseManager) {
         self.authManager = authManager
-        self.userManager = userManager
+        self.databaseManager = databaseManager
         
         Task {
             try await loadUserInfo()
@@ -30,7 +30,7 @@ final class SettingsViewModel: ObservableObject {
             throw AuthError.signInError
         }
         
-        let user = try await userManager.getUser(userId: userId)
+        let user = try await databaseManager.getUser(userId: userId)
         await MainActor.run {
             self.user = user
         }
