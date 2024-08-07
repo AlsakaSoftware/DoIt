@@ -54,10 +54,8 @@ extension DatabaseManager: Equatable {
 // MARK: databaseManager + ToDoItem
 extension DatabaseManager {
     func updateList(list: ToDoList, userId: String, forDate: Date) throws {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY-MM-dd"
-        let dateString = dateFormatter.string(from: forDate)
-        
+        let dateString = forDate.listDateStringFormat()
+
         guard dateString != "" else {
             // temporary error
             throw AuthError.signInError
@@ -70,14 +68,20 @@ extension DatabaseManager {
         } catch let error {
             print("Error writing ToDoItem to Firestore: \(error)")
         }
-
     }
 
-    func fetchList(userId: String, date: Date) async throws -> ToDoList {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY-MM-dd"
-        let dateString = dateFormatter.string(from: date)
+    func doesListExist(userId: String, date: Date) async throws -> Bool {
+        let dateString = date.listDateStringFormat()
+
+        let db = Firestore.firestore()
+        let listDocRef = db.collection("users").document(userId).collection("lists").document(dateString)
         
+        return try await listDocRef.getDocument().exists
+    }
+    
+    func fetchList(userId: String, date: Date) async throws -> ToDoList {
+        let dateString = date.listDateStringFormat()
+
         let db = Firestore.firestore()
         let listDocRef = db.collection("users").document(userId).collection("lists").document(dateString)
         
@@ -89,6 +93,61 @@ extension DatabaseManager {
         }
         
         let list = try documentSnapshot.data(as: ToDoList.self)
+
         return list
+    }
+
+    func fetchListsBeforeOrOnDate(userId: String, fromDate: Date) async throws -> [ToDoList] {
+        guard let dateString = fromDate.dayAfter()?.listDateStringFormat() else {
+            print("issue with getting required date string")
+            return []
+        }
+        
+        let db = Firestore.firestore()
+        let listsCollectionRef = db.collection("users").document(userId).collection("lists")
+        
+        // Perform the query
+        let querySnapshot = try await listsCollectionRef.whereField(FieldPath.documentID(), isLessThanOrEqualTo: dateString).getDocuments()
+        
+        var lists = [ToDoList]()
+        for document in querySnapshot.documents {
+            if let list = try? document.data(as: ToDoList.self) {
+                lists.append(list)
+            }
+        }
+
+        return lists
+    }
+}
+
+extension Date {
+    func listDateStringFormat() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: self)
+    }
+    
+    func dayAfter() -> Date? {
+        Calendar.current.date(byAdding: .day, value: 1, to: self)
+    }
+    
+    func dayBefore() -> Date? {
+        Calendar.current.date(byAdding: .day, value: -1, to: self)
+    }
+    
+    func titleFormat() -> String {
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMM yyyy"
+        
+        if calendar.isDateInToday(self) {
+            return "Today"
+        } else if calendar.isDateInYesterday(self) {
+            return "Yesterday"
+        } else if calendar.isDateInTomorrow(self) {
+            return "Tomorrow"
+        } else {
+            return dateFormatter.string(from: self)
+        }
     }
 }

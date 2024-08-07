@@ -58,6 +58,7 @@ struct HomeView: View {
     private var headerView: some View {
         HStack(alignment: .center) {
             Button {
+                viewModel.goToPreviousList()
             } label: {
                 Image("left-chevron")
                     .resizable()
@@ -68,19 +69,19 @@ struct HomeView: View {
             Spacer()
 
             VStack {
-                Text("Today")
+                Text(viewModel.currentListDate.titleFormat())
                  .font(.designSystem(.heading2))
                  .multilineTextAlignment(.center)
                 
-                Text("August 2nd")
-                    .font(.designSystem(.heading3))
-                    .multilineTextAlignment(.center)
+//                Text("August 2nd")
+//                    .font(.designSystem(.heading3))
+//                    .multilineTextAlignment(.center)
             }
 
             Spacer()
 
             Button {
-                
+                viewModel.goToNextList()
             } label: {
                 Image("right-chevron")
                     .resizable()

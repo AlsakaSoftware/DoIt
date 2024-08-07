@@ -10,5 +10,6 @@ struct ToDoItem: Codable, Identifiable {
 }
 
 struct ToDoList: Codable {
+    var dateString: String
     var items: [ToDoItem]
 }
