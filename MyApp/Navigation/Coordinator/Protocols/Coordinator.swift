@@ -38,11 +38,11 @@ open class Coordinator<Router: NavigationRouter>: NSObject, CoordinatorProtocol 
         
         navigationController.navigationBar.tintColor = UIColor(Color.designSystem(.primaryText))
         
-        if hideNavBar {
-            navigationController.setNavigationBarHidden(true, animated: false)
-        } else {
-            navigationController.setNavigationBarHidden(false, animated: false)
-        }
+//        if hideNavBar {
+//            navigationController.setNavigationBarHidden(true, animated: false)
+//        } else {
+//            navigationController.setNavigationBarHidden(false, animated: false)
+//        }
         
         if hideTabBar {
             viewController.hidesBottomBarWhenPushed = true
@@ -52,6 +52,7 @@ open class Coordinator<Router: NavigationRouter>: NSObject, CoordinatorProtocol 
         
         switch route.transition {
         case .push:
+            navigationController.setNavigationBarHidden(false, animated: false)
             navigationController.pushViewController(viewController, animated: animated)
         case .presentModally:
             viewController.modalPresentationStyle = .formSheet

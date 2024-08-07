@@ -18,17 +18,10 @@ struct HomeView: View {
             ScrollView {
                 VStack {
                     headerView
+                        .padding(.top, 30)
 
-                    VStack(alignment: .leading) {
-                        ForEach(viewModel.todaysList.items) { item in
-                            toDoItemRow(item: item)
-                        }
-                    }
-                    .padding(.horizontal, 5)
-                    .padding(.vertical, 40)
+                    listItemsSection
                     
-                    Spacer()
-
                     PrimaryButton {
                         coordinator.show(.addItem(itemIndex: viewModel.todaysList.items.count, onAddItem: { item in
                             viewModel.addToDoItem(item: item)
@@ -36,27 +29,30 @@ struct HomeView: View {
                     } label: {
                         Text("Add Item")
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 20)
+                    .padding(.horizontal, 100)
+
+                    Spacer()
                 }
-                .padding()
-                .navigationTitle("Home")
+                .padding(.horizontal, 15)
                 .frame(maxWidth: .infinity)
                 .frame(height: geometry.size.height)
             }
-        }
-        .background(Color.designSystem(.primaryBackground).ignoresSafeArea())
-        .onAppear {
-            coordinator.showATTPermissionsAlert()
-            if showPaywallOnLaunch {
-                showPaywallOnLaunch = false
-                Task {
-                    if await !PurchasesManager.shared.getSubscriptionStatus() {
-                        coordinator.show(.paywall)
+            .navigationBarHidden(true)
+            .onAppear {
+                coordinator.navigationController.setNavigationBarHidden(true, animated: false)
+                coordinator.showATTPermissionsAlert()
+                
+                if showPaywallOnLaunch {
+                    showPaywallOnLaunch = false
+                    Task {
+                        if await !PurchasesManager.shared.getSubscriptionStatus() {
+                            coordinator.show(.paywall)
+                        }
                     }
                 }
             }
         }
+        .background(Color.designSystem(.primaryBackground).ignoresSafeArea())
     }
     
     private var headerView: some View {
@@ -91,6 +87,46 @@ struct HomeView: View {
         }
     }
     
+    var listItemsSection: some View {
+        VStack(alignment: .leading) {
+            if viewModel.todaysList.items.count > 0 {
+                mainTasksSection(items: Array(viewModel.todaysList.items.prefix(3)))
+                    .padding(.bottom, 10)
+            }
+            
+            if viewModel.todaysList.items.count > 3 {
+                secondaryTasksSection(items: Array(viewModel.todaysList.items.dropFirst(3)))
+            }
+        }
+        .padding(.horizontal, 5)
+        .padding(.vertical, 40)
+    }
+    
+    @ViewBuilder
+    func mainTasksSection(items: [ToDoItem]) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Main")
+                .font(.designSystem(.heading3))
+
+            ForEach(items) { item in
+                toDoItemRow(item: item)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func secondaryTasksSection(items: [ToDoItem]) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Other")
+                .font(.designSystem(.heading3))
+
+            ForEach(items) { item in
+                toDoItemRow(item: item)
+            }
+        }
+    }
+
+    
     @ViewBuilder
     func toDoItemRow(item: ToDoItem) -> some View {    
         HStack {
@@ -105,7 +141,7 @@ struct HomeView: View {
             .foregroundStyle(Color.designSystem(.primaryControlBackground))
             
             Text(item.title)
-                .padding()
+                .padding(.horizontal, 5)
             
             Spacer()
             
@@ -120,7 +156,9 @@ struct HomeView: View {
                     .foregroundStyle(Color.designSystem(.primaryControlBackground))
             }
         }
-        .padding(.horizontal)
+        .padding(.vertical, 10)
+        .padding(.horizontal, 20)
+
         .background(Color.designSystem(.secondaryBackground).opacity(0.5))
         .cornerRadius(10)
     }
