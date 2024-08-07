@@ -81,6 +81,7 @@
 		99A865E52C5CE85C0056DFA2 /* MyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A865E42C5CE85C0056DFA2 /* MyApp.swift */; };
 		99A865EB2C5CEACD0056DFA2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 99A865EA2C5CEACD0056DFA2 /* GoogleService-Info.plist */; };
 		99A865EE2C5D16930056DFA2 /* ToDoList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A865ED2C5D16930056DFA2 /* ToDoList.swift */; };
+		99B0F42E2C6349F400D5F0E2 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B0F42D2C6349F400D5F0E2 /* Date+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -131,6 +132,7 @@
 		99A865E42C5CE85C0056DFA2 /* MyApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyApp.swift; sourceTree = "<group>"; };
 		99A865EA2C5CEACD0056DFA2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		99A865ED2C5D16930056DFA2 /* ToDoList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoList.swift; sourceTree = "<group>"; };
+		99B0F42D2C6349F400D5F0E2 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +252,7 @@
 				997BB8D12BD04943008BAD90 /* MyApp.entitlements */,
 				99A865E42C5CE85C0056DFA2 /* MyApp.swift */,
 				99388FC52BC93D3A008342BD /* AppDelegate.swift */,
+				99B0F42C2C6349E800D5F0E2 /* Extensions */,
 				99A865EC2C5D16850056DFA2 /* Models */,
 				995176382BEF414500EF9B8A /* DesignSystem */,
 				99388FD82BCA95B5008342BD /* Navigation */,
@@ -450,6 +453,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		99B0F42C2C6349E800D5F0E2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				99B0F42D2C6349F400D5F0E2 /* Date+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -583,6 +594,7 @@
 				997BB8D02BD02494008BAD90 /* ManageAccountView.swift in Sources */,
 				99388FD72BC9902E008342BD /* ResetPasswordView.swift in Sources */,
 				99388FE72BCA9BED008342BD /* AppRouter.swift in Sources */,
+				99B0F42E2C6349F400D5F0E2 /* Date+Extension.swift in Sources */,
 				99388FDF2BCA96DD008342BD /* TabbarCoordinator.swift in Sources */,
 				99388FEC2BCAA25A008342BD /* HomeFlowCoordinator.swift in Sources */,
 				9951763A2BEF415D00EF9B8A /* Color+DesignSystem.swift in Sources */,
