@@ -137,9 +137,7 @@ extension Date {
     
     func titleFormat() -> String {
         let calendar = Calendar.current
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd MMM yyyy"
-        
+
         if calendar.isDateInToday(self) {
             return "Today"
         } else if calendar.isDateInYesterday(self) {
@@ -147,7 +145,24 @@ extension Date {
         } else if calendar.isDateInTomorrow(self) {
             return "Tomorrow"
         } else {
-            return dateFormatter.string(from: self)
+            return dateStringDisplayFormat()
         }
+    }
+    
+    func dateStringDisplayFormat() -> String {
+        let calendar = Calendar.current
+
+        let currentYear = calendar.component(.year, from: Date())
+        let dateYear = calendar.component(.year, from: self)
+
+        let dateFormatter = DateFormatter()
+        
+        if currentYear == dateYear {
+            dateFormatter.dateFormat = "dd MMM"
+        } else {
+            dateFormatter.dateFormat = "dd MMM yyyy"
+        }
+
+        return dateFormatter.string(from: self)
     }
 }

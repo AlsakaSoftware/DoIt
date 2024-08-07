@@ -72,10 +72,6 @@ struct HomeView: View {
                 Text(viewModel.currentListDate.titleFormat())
                  .font(.designSystem(.heading2))
                  .multilineTextAlignment(.center)
-                
-//                Text("August 2nd")
-//                    .font(.designSystem(.heading3))
-//                    .multilineTextAlignment(.center)
             }
 
             Spacer()
