@@ -14,32 +14,36 @@ struct HomeView: View {
     @State var text: String = "asdasd"
     
     var body: some View {
-        ScrollView {
-            VStack {
-                headerView
+        GeometryReader { geometry in
+            ScrollView {
+                VStack {
+                    headerView
 
-                VStack(alignment: .leading) {
-                    ForEach(viewModel.todaysList.items) { item in
-                        toDoItemRow(item: item)
+                    VStack(alignment: .leading) {
+                        ForEach(viewModel.todaysList.items) { item in
+                            toDoItemRow(item: item)
+                        }
                     }
-                }
-                .padding(.horizontal, 5)
-                .padding(.vertical, 40)
-                
-                Spacer()
+                    .padding(.horizontal, 5)
+                    .padding(.vertical, 40)
+                    
+                    Spacer()
 
-                PrimaryButton {
-                    coordinator.show(.addItem(itemIndex: viewModel.todaysList.items.count, onAddItem: { item in
-                        viewModel.addToDoItem(item: item)
-                    }))
-                } label: {
-                    Text("Add Item")
+                    PrimaryButton {
+                        coordinator.show(.addItem(itemIndex: viewModel.todaysList.items.count, onAddItem: { item in
+                            viewModel.addToDoItem(item: item)
+                        }))
+                    } label: {
+                        Text("Add Item")
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 20)
                 }
-                .padding(.horizontal, 20)
+                .padding()
+                .navigationTitle("Home")
+                .frame(maxWidth: .infinity)
+                .frame(height: geometry.size.height)
             }
-            .padding()
-            .navigationTitle("Home")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .background(Color.designSystem(.primaryBackground).ignoresSafeArea())
         .onAppear {
