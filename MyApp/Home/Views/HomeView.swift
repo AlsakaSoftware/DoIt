@@ -122,6 +122,11 @@ struct HomeView: View {
     
     var listItemsSection: some View {
         VStack(alignment: .leading) {
+            
+            if viewModel.todaysList.items.count == 0 {
+                emptyItemsSection()
+            }
+            
             if viewModel.todaysList.items.count > 0 {
                 mainTasksSection(items: Array(viewModel.todaysList.items.prefix(3)))
                     .padding(.bottom, 10)
@@ -133,6 +138,26 @@ struct HomeView: View {
         }
         .padding(.horizontal, 5)
         .padding(.vertical, 40)
+    }
+    
+    @ViewBuilder
+    func emptyItemsSection() -> some View {
+        VStack {
+            Spacer()
+            Group {
+                Text("You have no items for today, use the ")
+                    .font(.designSystem(.body1))
+                + Text("+ ")
+                    .font(.designSystem(.heading2))
+                    .foregroundColor(Color.designSystem(.primaryControlBackground))
+                
+                + Text("button below to add a new item!")
+                    .font(.designSystem(.body1))
+            }
+            .multilineTextAlignment(.center)
+            
+            Spacer()
+        }
     }
     
     @ViewBuilder
