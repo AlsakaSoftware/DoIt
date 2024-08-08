@@ -13,6 +13,9 @@ struct HomeView: View {
     
     @State var text: String = "asdasd"
     
+    @State private var offset: CGFloat = 0
+    @State private var isSwiping: Bool = false
+
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
@@ -20,16 +23,23 @@ struct HomeView: View {
                     headerView
                         .padding(.top, 30)
 
-                    listItemsSection
-                    
-                    PrimaryButton {
-                        coordinator.show(.addItem(itemIndex: viewModel.todaysList.items.count, onAddItem: { item in
-                            viewModel.addToDoItem(item: item)
-                        }))
-                    } label: {
-                        Text("Add Item")
+                    if viewModel.isLoading {
+                        Spacer()
+
+                        CircularProgressView()
+                    } else {
+                        listItemsSection
+                        
+                        PrimaryButton {
+                            coordinator.show(.addItem(itemIndex: viewModel.todaysList.items.count, onAddItem: { item in
+                                viewModel.addToDoItem(item: item)
+                            }))
+                        } label: {
+                            Text("Add Item")
+                        }
+                        .padding(.horizontal, 100)
                     }
-                    .padding(.horizontal, 100)
+                    
 
                     Spacer()
                 }
@@ -51,6 +61,31 @@ struct HomeView: View {
                     }
                 }
             }
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        isSwiping = true
+                        offset = value.translation.width
+                    }
+                    .onEnded { value in
+                        if value.translation.width < -50 { // Swipe left
+                            withAnimation {
+                                viewModel.goToNextList()
+                            }
+                        } else if value.translation.width > 50 { // Swipe right
+                            withAnimation {
+                                viewModel.goToPreviousList()
+                            }
+                        } else {
+                            withAnimation {
+                                offset = 0
+                            }
+                        }
+                        isSwiping = false
+                    }
+            )
+            .animation(isSwiping ? nil : .snappy, value: offset)
+
         }
         .background(Color.designSystem(.primaryBackground).ignoresSafeArea())
     }

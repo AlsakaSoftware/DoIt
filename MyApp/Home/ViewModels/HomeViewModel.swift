@@ -10,7 +10,11 @@ final class HomeViewModel: ObservableObject {
             loadList(forDate: currentListDate)
         }
     }
-    @Published var todaysList = ToDoList(dateString: Date().listDateStringFormat(), items: [])
+    
+    @Published var isLoading: Bool = false
+
+    @Published var todaysList = ToDoList(dateString: Date().listDateStringFormat(), items: [
+    ])
 
     init(authManager: AuthManager, databaseManager: DatabaseManager) {
         self.authManager = authManager
@@ -68,18 +72,21 @@ final class HomeViewModel: ObservableObject {
         loadCurrentList()
     }
     
-    private func loadCurrentList() {
-        Task {
-            guard let userId = authManager.signedInUserId() else { return }
-            let list = try await databaseManager.fetchList(userId: userId, date: currentListDate)
-            DispatchQueue.main.async {
-                self.todaysList = list
-                if let index = self.listsArray.firstIndex(where: { $0.dateString == list.dateString }) {
-                    self.listsArray[index] = list
-                } else {
-                    self.listsArray.append(list)
-                }
+    private func loadCurrentList(showLoadingSpinner: Bool = false) {
+        Task { @MainActor in
+            isLoading = showLoadingSpinner
+            guard let userId = authManager.signedInUserId(), let list = try await databaseManager.fetchList(userId: userId, date: currentListDate) else {
+                isLoading = false
+                return
             }
+
+            self.todaysList = list
+            if let index = self.listsArray.firstIndex(where: { $0.dateString == list.dateString }) {
+                self.listsArray[index] = list
+            } else {
+                self.listsArray.append(list)
+            }
+            self.isLoading = false
         }
     }
 
@@ -94,7 +101,8 @@ final class HomeViewModel: ObservableObject {
             todaysList = list
             
             // if there's a list for this day stored on the database, retreive it
-            loadCurrentList()
+            // show loading indicator cuz we're loading an entire new list from the api
+            loadCurrentList(showLoadingSpinner: true)
         }
     }
 }

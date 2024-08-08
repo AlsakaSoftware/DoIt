@@ -79,7 +79,7 @@ extension DatabaseManager {
         return try await listDocRef.getDocument().exists
     }
     
-    func fetchList(userId: String, date: Date) async throws -> ToDoList {
+    func fetchList(userId: String, date: Date) async throws -> ToDoList? {
         let dateString = date.listDateStringFormat()
 
         let db = Firestore.firestore()
@@ -88,8 +88,7 @@ extension DatabaseManager {
         let documentSnapshot = try await listDocRef.getDocument()
 
         guard documentSnapshot.exists else {
-            print("Document does not exist at path: \(listDocRef.path)")
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document does not exist"])
+            return nil
         }
         
         let list = try documentSnapshot.data(as: ToDoList.self)
