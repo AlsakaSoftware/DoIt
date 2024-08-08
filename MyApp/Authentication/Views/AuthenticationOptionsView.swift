@@ -41,14 +41,15 @@ struct AuthenticationOptionsView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.designSystem(.primaryBackground))
-            .onChange(of: viewModel.didSignInWithAppleSuccessfully) { _, success in
+            .onChange(of: viewModel.didSignInWithAppleSuccessfully) { success in
                 if success {
                     coordinator.userSignedIn()
                 }
-            }
-            .onChange(of: viewModel.appleSignInError) { _, error in
+             }
+
+            .onChange(of: viewModel.appleSignInError) { error in
                 guard let error else { return }
-                                
+
                 coordinator.showErrorAlert("Failed to sign in with error: \n \(error.localizedDescription)")
             }
     }

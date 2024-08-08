@@ -34,6 +34,38 @@
             endingLineNumber = "53"
             landmarkName = "authorizationController(controller:didCompleteWithAuthorization:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2A395ED5-5961-4B2F-ACD6-F41CBDD9CCA2 - be64f37550ceb882"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MovieMate.AuthenticationOptionsViewModel.authorizationController(controller: __C.ASAuthorizationController, didCompleteWithAuthorization: __C.ASAuthorization) -&gt; ()"
+                  moduleName = "MovieMate"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/karimalsaka/Documents/GitHub/DoItApp/MyApp/Authentication/ViewModels/AuthenticationOptionsViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "1500">
+               </Location>
+               <Location
+                  uuid = "2A395ED5-5961-4B2F-ACD6-F41CBDD9CCA2 - be64f37550ceb882"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MovieMate.AuthenticationOptionsViewModel.authorizationController(controller: __C.ASAuthorizationController, didCompleteWithAuthorization: __C.ASAuthorization) -&gt; ()"
+                  moduleName = "MovieMate"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/karimalsaka/Documents/GitHub/DoItApp/MyApp/Authentication/ViewModels/AuthenticationOptionsViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "1556">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

@@ -27,21 +27,19 @@ struct HomeView: View {
                         Spacer()
 
                         CircularProgressView()
+                        
+                        Spacer()
                     } else {
                         listItemsSection
                         
-                        PrimaryButton {
-                            coordinator.show(.addItem(itemIndex: viewModel.todaysList.items.count, onAddItem: { item in
-                                viewModel.addToDoItem(item: item)
-                            }))
-                        } label: {
-                            Text("Add Item")
+                        Spacer()
+                        
+                        HStack {
+                            Spacer()
+                            addItemButton
                         }
-                        .padding(.horizontal, 100)
+                        .padding(.bottom, 20)
                     }
-                    
-
-                    Spacer()
                 }
                 .padding(.horizontal, 15)
                 .frame(maxWidth: .infinity)
@@ -68,11 +66,11 @@ struct HomeView: View {
                         offset = value.translation.width
                     }
                     .onEnded { value in
-                        if value.translation.width < -50 { // Swipe left
+                        if value.translation.width < -10 { // Swipe left
                             withAnimation {
                                 viewModel.goToNextList()
                             }
-                        } else if value.translation.width > 50 { // Swipe right
+                        } else if value.translation.width > 10 { // Swipe right
                             withAnimation {
                                 viewModel.goToPreviousList()
                             }
@@ -162,6 +160,8 @@ struct HomeView: View {
     }
 
     
+    // MARK: Components
+
     @ViewBuilder
     func toDoItemRow(item: ToDoItem) -> some View {    
         HStack {
@@ -196,6 +196,24 @@ struct HomeView: View {
 
         .background(Color.designSystem(.secondaryBackground).opacity(0.5))
         .cornerRadius(10)
+    }
+    
+    private var addItemButton: some View {
+        Button {
+            coordinator.show(.addItem(onAddItem: { item in
+                viewModel.addToDoItem(item: item)
+            }))
+        } label: {
+            Image("plus-icon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 20, height: 20)
+                .foregroundColor(.white)
+                .padding(20)
+                .background(Circle().fill(Color.designSystem(.primaryControlBackground)))
+        }
+        .frame(width: 60, height: 60)
+
     }
 }
 

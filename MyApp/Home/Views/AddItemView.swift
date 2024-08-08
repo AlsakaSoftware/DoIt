@@ -7,9 +7,8 @@ struct AddItemView: View {
     @State private var item: ToDoItem
     private var onAddItem: ((ToDoItem) -> Void)?
 
-    init(itemIndex: Int, onAddItem: ((ToDoItem) -> Void)? = nil) {
+    init(onAddItem: ((ToDoItem) -> Void)? = nil) {
         let item = ToDoItem(id: UUID(),
-                            dayIndex: itemIndex,
                             title: "",
                             description: "",
                             isMainTask: false,
@@ -64,5 +63,5 @@ struct AddItemView: View {
 }
 
 #Preview {
-    AddItemView(itemIndex: 1)
+    AddItemView()
 }

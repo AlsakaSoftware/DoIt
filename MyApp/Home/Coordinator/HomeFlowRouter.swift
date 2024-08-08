@@ -3,15 +3,15 @@ import SwiftUI
 enum HomeFlowRouter: NavigationRouter, Equatable {
     static func == (lhs: HomeFlowRouter, rhs: HomeFlowRouter) -> Bool {
         switch (lhs, rhs) {
-        case (.addItem(let itemIndex1, let onAddItem1), .addItem(let itemIndex2, let onAddItem2)):
-            return itemIndex1 == itemIndex2 && onAddItem1 == nil && onAddItem2 == nil
+        case (.addItem(let onAddItem1), .addItem(let onAddItem2)):
+            return onAddItem1 == nil && onAddItem2 == nil
         default:
             return true
         }
     }
 
     case home(authManager: AuthManager, databaseManager: DatabaseManager)
-    case addItem(itemIndex: Int, onAddItem: ((ToDoItem) -> Void)? = nil)
+    case addItem(onAddItem: ((ToDoItem) -> Void)? = nil)
     case paywall
     
     var title: String {
@@ -43,8 +43,8 @@ enum HomeFlowRouter: NavigationRouter, Equatable {
         case .home(let authManager, let databaseManager):
             let viewModel = HomeViewModel(authManager: authManager, databaseManager: databaseManager)
             HomeView(viewModel: viewModel)
-        case .addItem(let itemIndex, let onAddItem):
-            AddItemView(itemIndex: itemIndex, onAddItem: onAddItem)
+        case .addItem(let onAddItem):
+            AddItemView(onAddItem: onAddItem)
         case .paywall:
             PaywallView()
         }
