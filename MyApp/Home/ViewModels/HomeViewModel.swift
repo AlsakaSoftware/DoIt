@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 final class HomeViewModel: ObservableObject {
     private let authManager: AuthManager
@@ -26,12 +27,18 @@ final class HomeViewModel: ObservableObject {
     func goToPreviousList() {
         if let dayAfter = currentListDate.dayBefore() {
             currentListDate = dayAfter
+            
+            // this probably shouldn't be in the viewmodel but yolo
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
     }
     
     func goToNextList() {
         if let dayBefore = currentListDate.dayAfter() {
             currentListDate = dayBefore
+            
+            // this probably shouldn't be in the viewmodel but yolo
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
     }
     
