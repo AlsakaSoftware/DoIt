@@ -44,12 +44,14 @@ open class Coordinator<Router: NavigationRouter>: NSObject, CoordinatorProtocol 
 //            navigationController.setNavigationBarHidden(false, animated: false)
 //        }
         
-        if hideTabBar {
-            viewController.hidesBottomBarWhenPushed = true
-        } else {
-            viewController.hidesBottomBarWhenPushed = false
-        }
+//        if hideTabBar {
+//            viewController.hidesBottomBarWhenPushed = true
+//        } else {
+//            viewController.hidesBottomBarWhenPushed = false
+//        }
         
+        viewController.hidesBottomBarWhenPushed = true
+
         switch route.transition {
         case .push:
             navigationController.setNavigationBarHidden(false, animated: false)
