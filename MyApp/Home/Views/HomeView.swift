@@ -4,91 +4,67 @@ import RevenueCatUI
 struct HomeView: View {
     @EnvironmentObject var coordinator: HomeFlowCoordinator<HomeFlowRouter>
     @StateObject private var viewModel: HomeViewModel
-    @State var showPaywallOnLaunch: Bool = true
+    @State private var showPaywallOnLaunch: Bool = true
     @State private var isShowingAddItemSheet = false
+    @State private var draggedItem: ToDoItem?
 
     init(viewModel: HomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
-    
-    @State var text: String = "asdasd"
-    
-    @State private var offset: CGFloat = 0
-    @State private var isSwiping: Bool = false
 
     var body: some View {
-        GeometryReader { geometry in
-            ScrollView {
-                VStack {
-                    headerView
-                        .padding(.top, 30)
+        VStack {
+            header
 
-                    if viewModel.isLoading {
-                        Spacer()
-
-                        CircularProgressView()
-                        
-                        Spacer()
-                    } else {
-                        listItemsSection
-                        
-                        Spacer()
-                        
-                        HStack {
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack {
+                        if viewModel.isLoading {
                             Spacer()
-                            addItemButton
-                        }
-                        .padding(.bottom, 20)
-                    }
-                }
-                .padding(.horizontal, 15)
-                .frame(maxWidth: .infinity)
-                .frame(height: geometry.size.height)
-            }
-            .navigationBarHidden(true)
-            .onAppear {
-                coordinator.navigationController.setNavigationBarHidden(true, animated: false)
-                coordinator.showATTPermissionsAlert()
-                
-                if showPaywallOnLaunch {
-                    showPaywallOnLaunch = false
-                    Task {
-                        if await !PurchasesManager.shared.getSubscriptionStatus() {
-                            coordinator.show(.paywall)
-                        }
-                    }
-                }
-            }
-            .gesture(
-                DragGesture()
-                    .onChanged { value in
-                        isSwiping = true
-                        offset = value.translation.width
-                    }
-                    .onEnded { value in
-                        if value.translation.width < -10 { // Swipe left
-                            withAnimation {
-                                viewModel.goToNextList()
-                            }
-                        } else if value.translation.width > 10 { // Swipe right
-                            withAnimation {
-                                viewModel.goToPreviousList()
-                            }
-                        } else {
-                            withAnimation {
-                                offset = 0
-                            }
-                        }
-                        isSwiping = false
-                    }
-            )
-            .animation(isSwiping ? nil : .snappy, value: offset)
 
+                            CircularProgressView()
+
+                            Spacer()
+                        } else {
+                            listItemsSection
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: geometry.size.height)
+                }
+            }
+
+            HStack {
+                addItemButton
+                showWeeklyItemsButton
+            }
+            .padding(.bottom, 20)
+
+            footer
+                .padding(.horizontal, 30)
+            
         }
+        .padding(.horizontal, 15)
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity)
         .background(Color.designSystem(.primaryBackground).ignoresSafeArea())
+        .navigationBarHidden(true)
+        .onAppear {
+            coordinator.navigationController.setNavigationBarHidden(true, animated: false)
+            coordinator.showATTPermissionsAlert()
+            
+            if showPaywallOnLaunch {
+                showPaywallOnLaunch = false
+                Task {
+                    if await !PurchasesManager.shared.getSubscriptionStatus() {
+                        coordinator.show(.paywall)
+                    }
+                }
+            }
+        }
     }
     
-    private var headerView: some View {
+    private var footer: some View {
         HStack(alignment: .center) {
             Button {
                 viewModel.goToPreviousList()
@@ -101,14 +77,6 @@ struct HomeView: View {
 
             Spacer()
 
-            VStack {
-                Text(viewModel.currentListDate.titleFormat())
-                 .font(.designSystem(.heading2))
-                 .multilineTextAlignment(.center)
-            }
-
-            Spacer()
-
             Button {
                 viewModel.goToNextList()
             } label: {
@@ -117,6 +85,14 @@ struct HomeView: View {
                     .frame(width: 24, height: 24)
                     .foregroundStyle(Color.designSystem(.primaryText))
             }
+        }
+    }
+    
+    var header: some View {
+        VStack(alignment: .center) {
+            Text(viewModel.currentListDate.titleFormat())
+             .font(.designSystem(.heading2))
+             .multilineTextAlignment(.center)
         }
     }
     
@@ -221,6 +197,13 @@ struct HomeView: View {
 
         .background(Color.designSystem(.secondaryBackground).opacity(0.5))
         .cornerRadius(10)
+        .onDrag {
+            self.draggedItem = item
+            return NSItemProvider()
+        }
+        .onDrop(of: [.toDoItem],
+                delegate: DropViewDelegate(destinationItem: item, items: $viewModel.todaysList.items, draggedItem: $draggedItem)
+        )
     }
     
     private var addItemButton: some View {
@@ -240,6 +223,21 @@ struct HomeView: View {
         .frame(width: 60, height: 60)
 
     }
+    
+    private var showWeeklyItemsButton: some View {
+        Button {
+
+        } label: {
+            Image(systemName: "star")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 20, height: 20)
+                .foregroundColor(.white)
+                .padding(20)
+                .background(Circle().fill(Color.designSystem(.primaryControlBackground)))
+        }
+        .frame(width: 60, height: 60)
+    }
 }
 
 
@@ -247,4 +245,35 @@ struct HomeView: View {
     let viewModel = HomeViewModel(authManager: AuthManager(), databaseManager: DatabaseManager())
     return HomeView(viewModel: viewModel)
         .environmentObject(HomeFlowCoordinator<HomeFlowRouter>(authManager: AuthManager(), databaseManager: DatabaseManager()))
+}
+
+
+struct DropViewDelegate: DropDelegate {
+    
+    let destinationItem: ToDoItem
+    @Binding var items: [ToDoItem]
+    @Binding var draggedItem: ToDoItem?
+    
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        return DropProposal(operation: .move)
+    }
+    
+    func performDrop(info: DropInfo) -> Bool {
+        draggedItem = nil
+        return true
+    }
+    
+    func dropEntered(info: DropInfo) {
+        if let draggedItem {
+            let fromIndex = items.firstIndex(of: draggedItem)
+            if let fromIndex {
+                let toIndex = items.firstIndex(of: destinationItem)
+                if let toIndex, fromIndex != toIndex {
+                    withAnimation {
+                        self.items.move(fromOffsets: IndexSet(integer: fromIndex), toOffset: (toIndex > fromIndex ? (toIndex + 1) : toIndex))
+                    }
+                }
+            }
+        }
+    }
 }

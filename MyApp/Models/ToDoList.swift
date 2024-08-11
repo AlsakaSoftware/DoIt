@@ -1,6 +1,6 @@
 import Foundation
 
-struct ToDoItem: Codable, Identifiable {
+struct ToDoItem: Codable, Identifiable, Equatable {
     var id: UUID
     var title: String
     var description: String
