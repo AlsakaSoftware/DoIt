@@ -8,6 +8,8 @@ struct HomeView: View {
     @State private var isShowingAddItemSheet = false
     @State private var draggedItem: ToDoItem?
 
+    @State private var isShowingWeeklyItems: Bool = false
+    
     init(viewModel: HomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -62,7 +64,103 @@ struct HomeView: View {
                 }
             }
         }
+        .sheet(isPresented: $isShowingWeeklyItems) {
+            WeeklyItemsListView(items: viewModel.todaysList.items)
+                .presentationDetents([.fraction(0.25)])
+//                .presentationDragIndicator(.hidden)
+        }
     }
+    
+    // MARK: ViewBuilder functions
+
+    @ViewBuilder
+    func emptyItemsSection() -> some View {
+        VStack {
+            Spacer()
+            Group {
+                Text("You have no items for today, use the ")
+                    .font(.designSystem(.body1))
+                + Text("+ ")
+                    .font(.designSystem(.heading2))
+                    .foregroundColor(Color.designSystem(.primaryControlBackground))
+                
+                + Text("button below to add a new item!")
+                    .font(.designSystem(.body1))
+            }
+            .multilineTextAlignment(.center)
+            
+            Spacer()
+        }
+    }
+    
+    @ViewBuilder
+    func mainTasksSection(items: [ToDoItem]) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Main")
+                .font(.designSystem(.heading3))
+
+            ForEach(items) { item in
+                toDoItemRow(item: item)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func secondaryTasksSection(items: [ToDoItem]) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Other")
+                .font(.designSystem(.heading3))
+
+            ForEach(items) { item in
+                toDoItemRow(item: item)
+            }
+        }
+    }
+
+    @ViewBuilder
+    func toDoItemRow(item: ToDoItem) -> some View {
+        HStack {
+            Button {
+                viewModel.updateCompletionStatus(item: item)
+            } label: {
+                Image(item.isCompleted ? "checkbox-checked-filled" : "checkbox-unchecked")
+                    .resizable()
+                    .frame(width: 35, height: 35)
+
+            }
+            .foregroundStyle(Color.designSystem(.primaryControlBackground))
+            
+            Text(item.title)
+                .padding(.horizontal, 5)
+            
+            Spacer()
+            
+            Button {
+                Task {
+                    await viewModel.deleteItem(itemId: item.id)
+                }
+            } label: {
+                Image("trash-icon")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .foregroundStyle(Color.designSystem(.primaryControlBackground))
+            }
+        }
+        .padding(.vertical, 10)
+        .padding(.horizontal, 20)
+
+        .background(Color.designSystem(.secondaryBackground).opacity(0.5))
+        .cornerRadius(10)
+        .onDrag {
+            self.draggedItem = item
+            return NSItemProvider()
+        }
+        .onDrop(of: [.toDoItem],
+                delegate: ToDoListDropViewDelegate(destinationItem: item, items: $viewModel.todaysList.items, draggedItem: $draggedItem)
+        )
+    }
+
+    // MARK: Component variables
     
     private var footer: some View {
         HStack(alignment: .center) {
@@ -115,97 +213,6 @@ struct HomeView: View {
         .padding(.horizontal, 5)
         .padding(.vertical, 40)
     }
-    
-    @ViewBuilder
-    func emptyItemsSection() -> some View {
-        VStack {
-            Spacer()
-            Group {
-                Text("You have no items for today, use the ")
-                    .font(.designSystem(.body1))
-                + Text("+ ")
-                    .font(.designSystem(.heading2))
-                    .foregroundColor(Color.designSystem(.primaryControlBackground))
-                
-                + Text("button below to add a new item!")
-                    .font(.designSystem(.body1))
-            }
-            .multilineTextAlignment(.center)
-            
-            Spacer()
-        }
-    }
-    
-    @ViewBuilder
-    func mainTasksSection(items: [ToDoItem]) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Main")
-                .font(.designSystem(.heading3))
-
-            ForEach(items) { item in
-                toDoItemRow(item: item)
-            }
-        }
-    }
-    
-    @ViewBuilder
-    func secondaryTasksSection(items: [ToDoItem]) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Other")
-                .font(.designSystem(.heading3))
-
-            ForEach(items) { item in
-                toDoItemRow(item: item)
-            }
-        }
-    }
-
-    
-    // MARK: Components
-
-    @ViewBuilder
-    func toDoItemRow(item: ToDoItem) -> some View {    
-        HStack {
-            Button {
-                viewModel.updateCompletionStatus(item: item)
-            } label: {
-                Image(item.isCompleted ? "checkbox-checked-filled" : "checkbox-unchecked")
-                    .resizable()
-                    .frame(width: 35, height: 35)
-
-            }
-            .foregroundStyle(Color.designSystem(.primaryControlBackground))
-            
-            Text(item.title)
-                .padding(.horizontal, 5)
-            
-            Spacer()
-            
-            Button {
-                Task {
-                    await viewModel.deleteItem(itemId: item.id)
-                }
-            } label: {
-                Image("trash-icon")
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                    .foregroundStyle(Color.designSystem(.primaryControlBackground))
-            }
-        }
-        .padding(.vertical, 10)
-        .padding(.horizontal, 20)
-
-        .background(Color.designSystem(.secondaryBackground).opacity(0.5))
-        .cornerRadius(10)
-        .onDrag {
-            self.draggedItem = item
-            return NSItemProvider()
-        }
-        .onDrop(of: [.toDoItem],
-                delegate: ToDoListDropViewDelegate(destinationItem: item, items: $viewModel.todaysList.items, draggedItem: $draggedItem)
-        )
-    }
-    
     private var addItemButton: some View {
         Button {
             coordinator.show(.addItem(onAddItem: { item in
@@ -226,7 +233,7 @@ struct HomeView: View {
     
     private var showWeeklyItemsButton: some View {
         Button {
-
+            isShowingWeeklyItems = true
         } label: {
             Image(systemName: "star")
                 .resizable()

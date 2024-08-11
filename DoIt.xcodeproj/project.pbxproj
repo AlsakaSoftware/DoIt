@@ -80,6 +80,7 @@
 		997BB8CE2BCE9229008BAD90 /* SettingsFlowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997BB8CC2BCE9228008BAD90 /* SettingsFlowRouter.swift */; };
 		997BB8D02BD02494008BAD90 /* ManageAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997BB8CF2BD02493008BAD90 /* ManageAccountView.swift */; };
 		997CA5212C68DA4200B64E4C /* HomeView+ToDoListDropViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997CA5202C68DA4200B64E4C /* HomeView+ToDoListDropViewDelegate.swift */; };
+		997CA5282C68E08F00B64E4C /* WeeklyItemsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997CA5272C68E08E00B64E4C /* WeeklyItemsListView.swift */; };
 		99A865E52C5CE85C0056DFA2 /* MyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A865E42C5CE85C0056DFA2 /* MyApp.swift */; };
 		99A865EB2C5CEACD0056DFA2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 99A865EA2C5CEACD0056DFA2 /* GoogleService-Info.plist */; };
 		99A865EE2C5D16930056DFA2 /* ToDoList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A865ED2C5D16930056DFA2 /* ToDoList.swift */; };
@@ -133,6 +134,7 @@
 		997BB8CF2BD02493008BAD90 /* ManageAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountView.swift; sourceTree = "<group>"; };
 		997BB8D12BD04943008BAD90 /* MyApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyApp.entitlements; sourceTree = "<group>"; };
 		997CA5202C68DA4200B64E4C /* HomeView+ToDoListDropViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeView+ToDoListDropViewDelegate.swift"; sourceTree = "<group>"; };
+		997CA5272C68E08E00B64E4C /* WeeklyItemsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyItemsListView.swift; sourceTree = "<group>"; };
 		99A865E42C5CE85C0056DFA2 /* MyApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyApp.swift; sourceTree = "<group>"; };
 		99A865EA2C5CEACD0056DFA2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		99A865ED2C5D16930056DFA2 /* ToDoList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoList.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 			children = (
 				99388FD22BC94C10008342BD /* HomeView.swift */,
 				995431282C5E48CF002765DA /* AddItemView.swift */,
+				997CA5272C68E08E00B64E4C /* WeeklyItemsListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -605,6 +608,7 @@
 				99388FDC2BCA9651008342BD /* NavigationRouter.swift in Sources */,
 				995176472BF0D8F600EF9B8A /* SecondaryButton.swift in Sources */,
 				99388FC92BC93FDC008342BD /* SignInWithEmailView.swift in Sources */,
+				997CA5282C68E08F00B64E4C /* WeeklyItemsListView.swift in Sources */,
 				997BB8C42BCE8B1F008BAD90 /* AuthenticationFlowCoordinator.swift in Sources */,
 				99388FED2BCAA25C008342BD /* HomeFlowRouter.swift in Sources */,
 				99631D742C64F2F90055D7F5 /* CircularLoadingView.swift in Sources */,
@@ -692,7 +696,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -749,7 +753,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
